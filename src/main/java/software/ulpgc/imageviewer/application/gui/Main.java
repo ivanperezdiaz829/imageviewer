@@ -16,7 +16,8 @@ public class Main {
     private static File root;
 
     public static void main(String[] args) {
-        root = new File("images");
+        root = new File(System.getProperty("user.dir"), "images");
+        if (!root.exists()) root.mkdirs();
         ImageStore imageStore = new FileImageStore(root);
         ImageProvider imageProvider = ImageProvider.of(imageStore.images());
         SwingImageDisplay imageDisplay = new SwingImageDisplay();

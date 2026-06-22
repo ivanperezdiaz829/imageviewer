@@ -15,7 +15,13 @@ public class FileImageStore implements ImageStore {
 
     @Override
     public Stream<String> images() {
-        return imagesIn(file.list());
+        String[] list = file.list((dir, name) -> {
+            String lower = name.toLowerCase();
+            return lower.endsWith(".jpg") || lower.endsWith(".jpeg")
+                || lower.endsWith(".png") || lower.endsWith(".bmp");
+        });
+        if (list == null || list.length == 0) return Stream.empty();
+        return imagesIn(list);
     }
 
     private Stream<String> imagesIn(String[] list) {
